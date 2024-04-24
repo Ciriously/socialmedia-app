@@ -3,6 +3,12 @@ import { ID, Query } from "appwrite";
 import { INewUser } from "@/types";
 import { account, appwriteConfig, avatars, databases } from "./config";
 
+
+// ============================================================
+// AUTH
+// ============================================================
+
+// ============================== SIGN UP
 export async function createUserAccount(user:INewUser){
     try {
             const newAccount = await account.create(
@@ -34,6 +40,7 @@ export async function createUserAccount(user:INewUser){
         }
     }
 
+// ============================== SAVE USER TO DB
 
 export async function saveUserToDB(user: {
         accountId: string;
@@ -57,7 +64,7 @@ export async function saveUserToDB(user: {
             }
  }
 
-
+// ============================== SIGN IN
  export async function signInAccount(user: { email: string; password: string }) {
   try {
     const session = await account.createEmailSession(user.email, user.password);
@@ -67,7 +74,7 @@ export async function saveUserToDB(user: {
     console.error("Error in signInAccount function: ", error);
   }
 }
-
+// ============================== GET USER
 export async function getCurrentUser() {
   try {
     const currentAccount = await account.get();
@@ -83,6 +90,16 @@ export async function getCurrentUser() {
     if (!currentUser) throw Error;
 
     return currentUser.documents[0];
+  } catch (error) {
+    console.log(error);
+  }
+}
+// ============================== SIGN OUT
+export async function signOutAccount() {
+  try {
+    const session = await account.deleteSession("current");
+
+    return session;
   } catch (error) {
     console.log(error);
   }
