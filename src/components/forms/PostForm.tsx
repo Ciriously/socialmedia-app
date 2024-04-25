@@ -16,6 +16,11 @@ import { Textarea } from "../ui/textarea";
 import FileUploader from "../shared/FileUploader";
 import { Models } from "appwrite";
 import { PostValidation } from "@/lib/validation";
+import { useUserContext } from "@/context/AuthContext";
+import { useToast } from "../ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { createPost } from "@/lib/appwrite/api";
+import { useCreatePost } from "@/lib/react-query/queriesAndMutatuions";
 
 type PostFormProps = {
   post?: Models.Document;
@@ -23,9 +28,9 @@ type PostFormProps = {
 };
 
 const PostForm = ({ post }: PostFormProps) => {
-  // const navigate = useNavigate();
-  // const { toast } = useToast();
-  // const { user } = useUserContext();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { user } = useUserContext();
   const form = useForm<z.infer<typeof PostValidation>>({
     resolver: zodResolver(PostValidation),
     defaultValues: {
@@ -36,17 +41,30 @@ const PostForm = ({ post }: PostFormProps) => {
     },
   });
 
+  // Query
+  const { mutateAsync: createPost, isPending: isLoadingCreate } =
+    useCreatePost();
+  // const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
+  //   useUpdatePost();
+
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof PostValidation>) {
+    // ACTION = CREATE
+    const newPost = await createPost({
+      ...values,
+      userId: user.id,
+    });
+
+    if (!newPost)
+      toast({
+        title: "Please try again",
+      });
   }
 
   return (
     <Form {...form}>
       <form
-        // onSubmit={form.handleSubmit(handleSubmit)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-9 w-full  max-w-5xl"
       >
         <FormField
