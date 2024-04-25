@@ -2,17 +2,16 @@ import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 
 import { Button } from "@/components/ui/button";
-// import { convertFileToUrl } from "@/lib/utils";
 
 // Define the props for the FileUploader component
 type FileUploaderProps = {
-  fieldChange: (files: File[]) => void; // A function to handle file changes
+  fieldChange: (FILES: File[]) => void; // A function to handle file changes
   mediaUrl: string; // The URL of the media file
 };
 
 const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
   const [file, setFile] = useState<File[]>([]);
-  const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
+  const [fileUrl, setFileUrl] = useState("");
 
   // Callback function to handle file drop
   const onDrop = useCallback(

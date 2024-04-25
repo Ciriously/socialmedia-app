@@ -136,6 +136,7 @@ export async function createPost(post: INewPost) {
     const tags = post.tags?.replace(/ /g, "").split(",") || [];
 
     // Create post
+    console.log(fileUrl)
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
@@ -143,7 +144,7 @@ export async function createPost(post: INewPost) {
       {
         creator: post.userId,
         caption: post.caption,
-        imageUrl: fileUrl,
+        imageURL: fileUrl,
         imageId: uploadedFile.$id,
         location: post.location,
         tags: tags,
@@ -281,7 +282,7 @@ export async function updatePost(post: IUpdatePost) {
       if (!uploadedFile) throw Error;
 
       // Get new file url
-      const fileUrl = await getFilePreview(uploadedFile.$id);
+      const fileUrl =  getFilePreview(uploadedFile.$id);
       if (!fileUrl) {
         await deleteFile(uploadedFile.$id);
         throw Error;
