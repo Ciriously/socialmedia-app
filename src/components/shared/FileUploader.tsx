@@ -21,7 +21,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
       fieldChange(acceptedFiles); // Call the fieldChange function with the accepted files
       setFileUrl(URL.createObjectURL(acceptedFiles[0])); // Convert the first accepted file to a URL and update the fileUrl state
     },
-    [file] // Dependency array for the useCallback hook
+    [file]
   );
 
   // Use the useDropzone hook to get the root and input props for the dropzone

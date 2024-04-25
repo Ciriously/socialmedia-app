@@ -18,7 +18,7 @@ import Loader from "@/components/shared/Loader";
 import { toast, useToast } from "@/components/ui/use-toast";
 import {
   useSignInAccount,
-  userCreateUserAccount,
+  useCreateUserAccount,
 } from "@/lib/react-query/queriesAndMutatuions";
 import { useUserContext } from "@/context/AuthContext";
 
@@ -38,7 +38,7 @@ const Signupform = () => {
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
   const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
-    userCreateUserAccount();
+    useCreateUserAccount();
 
   const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();

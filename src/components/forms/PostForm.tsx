@@ -20,14 +20,18 @@ import { useUserContext } from "@/context/AuthContext";
 import { useToast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "@/lib/appwrite/api";
-import { useCreatePost } from "@/lib/react-query/queriesAndMutatuions";
+import {
+  useCreatePost,
+  useUpdatePost,
+} from "@/lib/react-query/queriesAndMutatuions";
+import { Loader } from "lucide-react";
 
 type PostFormProps = {
   post?: Models.Document;
-  // action: "Create" | "Update";
+  action: "Create" | "Update";
 };
 
-const PostForm = ({ post }: PostFormProps) => {
+const PostForm = ({ post, action }: PostFormProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
@@ -44,27 +48,46 @@ const PostForm = ({ post }: PostFormProps) => {
   // Query
   const { mutateAsync: createPost, isPending: isLoadingCreate } =
     useCreatePost();
-  // const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
-  //   useUpdatePost();
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } =
+    useUpdatePost();
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof PostValidation>) {
+  // Handler
+  const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
+    // ACTION = UPDATE
+    if (post && action === "Update") {
+      const updatedPost = await updatePost({
+        ...value,
+        postId: post.$id,
+        imageId: post.imageId,
+        imageUrl: post.imageUrl,
+      });
+
+      if (!updatedPost) {
+        toast({
+          title: `${action} post failed. Please try again.`,
+        });
+      }
+      return navigate(`/posts/${post.$id}`);
+    }
+
     // ACTION = CREATE
     const newPost = await createPost({
-      ...values,
+      ...value,
       userId: user.id,
     });
 
-    if (!newPost)
+    if (!newPost) {
       toast({
-        title: "Please try again",
+        title: `${action} post failed. Please try again.`,
       });
-  }
+    }
+    navigate("/");
+  };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-9 w-full  max-w-5xl"
       >
         <FormField
@@ -140,21 +163,22 @@ const PostForm = ({ post }: PostFormProps) => {
           <Button
             type="button"
             className="shad-button_dark_4"
-            // onClick={() => navigate(-1)}
+            onClick={() => navigate(-1)}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
-            // disabled={isLoadingCreate || isLoadingUpdate}
+            disabled={isLoadingCreate || isLoadingUpdate}
           >
-            {/* {(isLoadingCreate || isLoadingUpdate) && <Loader />} */}
-            {/* {action} Post */} Post
+            {(isLoadingCreate || isLoadingUpdate) && <Loader />}
+            {action} Post
           </Button>
         </div>
       </form>
     </Form>
   );
 };
+
 export default PostForm;
