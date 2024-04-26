@@ -8,11 +8,11 @@ import {
 } from "react-router-dom";
 
 import { Button } from "@/components/ui";
-import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById } from "@/lib/react-query/queriesAndMutatuions";
 import { Loader } from "lucide-react";
 import GridPostList from "@/components/shared/GridPostList";
+import LikedPosts from "./LikedPosts";
 
 interface StabBlockProps {
   value: string | number;

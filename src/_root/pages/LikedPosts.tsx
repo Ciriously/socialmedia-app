@@ -5,6 +5,11 @@ import { Loader } from "lucide-react";
 const LikedPosts = () => {
   const { data: currentUser } = useGetCurrentUser();
 
+  if (currentUser) {
+    console.log("Liked posts:", currentUser.liked);
+  } else {
+    console.log("Current user not loaded yet");
+  }
   if (!currentUser)
     return (
       <div className="flex-center w-full h-full">
@@ -14,11 +19,11 @@ const LikedPosts = () => {
 
   return (
     <>
-      {currentUser.liked.length === 0 && (
+      {currentUser.Liked?.length === 0 && (
         <p className="text-light-4">No liked posts</p>
       )}
 
-      <GridPostList posts={currentUser.liked} showStats={false} />
+      <GridPostList posts={currentUser.Liked || []} showStats={false} />
     </>
   );
 };

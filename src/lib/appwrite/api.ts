@@ -353,21 +353,29 @@ export async function deletePost(postId?: string, imageId?: string) {
 
 // ============================== LIKE / UNLIKE POST
 export async function likePost(postId: string, likesArray: string[]) {
+  console.log('likePost input:', postId, likesArray);
+
   try {
     const updatedPost = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       postId,
       {
-        likes: likesArray,
+        Likes: likesArray,
       }
     );
 
-    if (!updatedPost) throw Error;
+    console.log('Updated post:', updatedPost);
+
+    // Check if updatedPost is undefined
+    if (!updatedPost) {
+      console.log('updatedPost is undefined');
+      throw Error;
+    }
 
     return updatedPost;
   } catch (error) {
-    console.log(error);
+    console.log('Error in likePost:', error);
   }
 }
 

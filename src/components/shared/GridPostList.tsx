@@ -16,7 +16,7 @@ const GridPostList = ({
   showStats = true,
 }: GridPostListProps) => {
   const { user } = useUserContext();
-
+  console.log("Rendering posts:", posts);
   return (
     <ul className="grid-container">
       {posts.map((post) => (

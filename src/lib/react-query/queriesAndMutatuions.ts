@@ -210,11 +210,16 @@ export const useDeleteSavedPost = () => {
 // ============================================================
 
 export const useGetCurrentUser = () => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.GET_CURRENT_USER],
-    queryFn: getCurrentUser,
-  });
-};
+    const queryInfo = useQuery({
+      queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      queryFn: getCurrentUser,
+    });
+  
+    console.log('Current user data:', queryInfo.data);
+  
+    return queryInfo;
+  };
+  
 
 export const useGetUsers = (limit?: number) => {
   return useQuery({
