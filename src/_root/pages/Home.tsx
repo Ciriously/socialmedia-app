@@ -1,6 +1,6 @@
 import { Models } from "appwrite";
 
-import { useToast } from "@/components/ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 import Loader from "@/components/shared/Loader";
 import {
   useGetRecentPosts,
@@ -9,7 +9,7 @@ import {
 import PostCard from "@/components/shared/PostCard";
 
 const Home = () => {
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const {
     data: posts,

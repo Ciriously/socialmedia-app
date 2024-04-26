@@ -10,6 +10,7 @@ type PostCardProps = {
 };
 
 const PostCard = ({ post }: PostCardProps) => {
+  console.log("Rendering post:", post);
   const { user } = useUserContext();
 
   if (!post.creator) return;

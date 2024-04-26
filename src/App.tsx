@@ -1,32 +1,34 @@
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import SigninForm from "./_auth/forms/SigninForm";
 import {
-  Explore,
   Home,
-  PostDetails,
-  Profile,
+  Explore,
   Saved,
+  CreatePost,
+  Profile,
+  EditPost,
+  PostDetails,
   UpdateProfile,
-} from "./_root/pages";
-import Signupform from "./_auth/forms/Signupform";
-import AuthLayout from "./_auth/forms/AuthLayout";
+  AllUsers,
+} from "@/_root/pages";
+import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
-import "./globals.css";
+import SignupForm from "@/_auth/forms/Signupform";
+import SigninForm from "@/_auth/forms/SigninForm";
 import { Toaster } from "@/components/ui/toaster";
-import CreatePost from "./_root/pages/CreatePost";
-import EditPost from "./_root/pages/EditPost";
-import AllUsers from "./_root/pages/AllUsers";
+
+import "./globals.css";
 
 const App = () => {
   return (
     <main className="flex h-screen">
       <Routes>
-        {/*  public Routes */}
+        {/* public routes */}
         <Route element={<AuthLayout />}>
           <Route path="/sign-in" element={<SigninForm />} />
-          <Route path="/sign-up" element={<Signupform />} />
+          <Route path="/sign-up" element={<SignupForm />} />
         </Route>
+
         {/* private routes */}
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
@@ -40,6 +42,7 @@ const App = () => {
           <Route path="/update-profile/:id" element={<UpdateProfile />} />
         </Route>
       </Routes>
+
       <Toaster />
     </main>
   );
