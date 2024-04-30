@@ -31,7 +31,7 @@ const SearchResults = ({
 };
 
 const Explore = () => {
-  const { ref, inView } = useInView();
+  const { ref } = useInView();
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
 
   const [searchValue, setSearchValue] = useState("");
